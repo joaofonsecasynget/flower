@@ -1,14 +1,26 @@
 {
   "dockerFile": "Dockerfile",
-  "postCreateCommand": "sudo poetry install --extras \"simulation\"",
+  "postCreateCommand": "sudo apt update && sudo apt install -y python3.10-venv && git config --global --add safe.directory /workspaces/flower && sudo poetry install --extras \"simulation\"",
   "customizations": {
     "vscode": {
       "settings": {
-        "files.watcherExclude": { },
-        "search.exclude": { },
+        "files.watcherExclude": {
+          "**/node_modules/**": true,
+          "**/.git/objects/**": true,
+          "**/.git/subtree/**": true,
+          "**/.hg/store/**": true
+        },
+        "search.exclude": {
+          "**/node_modules": true,
+          "**/bower_components": true
+        },
         "terminal.integrated.defaultProfile.linux": "bash"
       },
-      "extensions": [ "ms-python.python" ]
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.debugpy"
+      ]
     }
   },
   "remoteUser": "flwr-vscode",
@@ -17,5 +29,8 @@
   },
   "mounts": [
     "source=flwr-bashhistory,target=/commandhistory,type=volume"
-  ]
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2.12.0": {}
+  }
 }
